@@ -1,22 +1,25 @@
 -- LocalScript → StarterGui
 local player = game.Players.LocalPlayer
 
--- ===== Save-status (biar sekali benar, gak muncul lagi) =====
+-- ===== Save-status =====
 local saved = player:FindFirstChild("KeyValidated")
 if not saved then
     saved = Instance.new("BoolValue")
-    saved.Name = "key system"
+    saved.Name = "KeyValidated"
     saved.Value = false
     saved.Parent = player
 end
 
+-- kalau sudah pernah valid → langsung jalankan script
+if saved.Value then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20x%20v1.1"))()
+    return
+end
+
 local gui = Instance.new("ScreenGui")
-gui.Name = "key system"
+gui.Name = "KeySystem"
 gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
-
--- kalau udah pernah valid → langsung tutup
-if saved.Value then gui:Destroy() return end
 
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 320, 0, 200)
@@ -25,7 +28,7 @@ frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.Parent = gui
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0,10)
 
--- × close
+-- CLOSE BUTTON
 local closeBtn = Instance.new("TextButton", frame)
 closeBtn.Text = "×"
 closeBtn.Size = UDim2.new(0,28,0,28)
@@ -33,8 +36,92 @@ closeBtn.Position = UDim2.new(1,-34,0,6)
 closeBtn.BackgroundColor3 = Color3.fromRGB(200,40,40)
 closeBtn.TextColor3 = Color3.new(1,1,1)
 closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 18
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1,0)
-closeBtn.MouseButton1Click:Connect(function() gui:Destroy() end)
+
+closeBtn.MouseButton1Click:Connect(function()
+    gui:Destroy()
+end)
+
+-- TEXTBOX
+local box = Instance.new("TextBox", frame)
+box.PlaceholderText = "Enter key..."
+box.Size = UDim2.new(0.9,0,0,36)
+box.Position = UDim2.new(0.05,0,0.18,0)
+box.BackgroundColor3 = Color3.fromRGB(50,50,50)
+box.TextColor3 = Color3.new(1,1,1)
+box.ClearTextOnFocus = false
+Instance.new("UICorner", box)
+
+-- STATUS
+local status = Instance.new("TextLabel", frame)
+status.Text = ""
+status.Size = UDim2.new(0.9,0,0,20)
+status.Position = UDim2.new(0.05,0,0.4,0)
+status.BackgroundTransparency = 1
+status.TextColor3 = Color3.new(1,1,1)
+
+-- COPY BUTTON
+local copyBtn = Instance.new("TextButton", frame)
+copyBtn.Text = "Copy Link"
+copyBtn.Size = UDim2.new(0.43,0,0,36)
+copyBtn.Position = UDim2.new(0.05,0,0.6,0)
+copyBtn.BackgroundColor3 = Color3.fromRGB(0,120,215)
+copyBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", copyBtn)
+
+-- CHECK BUTTON
+local checkBtn = Instance.new("TextButton", frame)
+checkBtn.Text = "Check"
+checkBtn.Size = UDim2.new(0.43,0,0,36)
+checkBtn.Position = UDim2.new(0.52,0,0.6,0)
+checkBtn.BackgroundColor3 = Color3.fromRGB(0,170,85)
+checkBtn.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", checkBtn)
+
+-- LOGIC
+local LINK = "https://rekonise.com/key-system-rolex-hub-x-o5y2g"
+local KEYWORD = "Rolexhub67"
+
+local cooldown = false
+
+copyBtn.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(LINK)
+        copyBtn.Text = "Copied!"
+        task.wait(1)
+        copyBtn.Text = "Copy Link"
+    end
+end)
+
+checkBtn.MouseButton1Click:Connect(function()
+
+    if cooldown then return end
+    cooldown = true
+
+    status.Text = "Checking key..."
+    task.wait(2)
+
+    if box.Text == KEYWORD then
+        
+        status.Text = "Key Valid!"
+        saved.Value = true
+        
+        task.wait(0.5)
+        gui:Destroy()
+
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20x%20v1.1"))()
+
+    else
+        
+        status.Text = "Key Invalid"
+        box.Text = ""
+
+    end
+
+    cooldown = false
+
+end)closeBtn.MouseButton1Click:Connect(function() gui:Destroy() end)
 
 -- TextBox
 local box = Instance.new("TextBox", frame)
