@@ -1,0 +1,304 @@
+local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/refs/heads/master/source.lua", true))()
+
+local Window = Luna:CreateWindow({
+    Name = "Rolex hub x",
+    LogoID = "82795327169782",
+    LoadingEnabled = true,
+    LoadingTitle = "Rolex hub x v1.1",
+    LoadingSubtitle = "by rana_GZ77 • ZREfisch • Nebula",
+    ConfigSettings = {
+        ConfigFolder = "Big Hub"
+    },
+    KeySystem = false,
+})
+
+-- Tab Credits
+local creditsTab = Window:CreateTab({
+    Name = "credits",
+    Icon = "house",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local creditsSection = creditsTab:CreateSection("Rolex hub x v1.1")
+local creditsInfo = creditsTab:CreateParagraph({
+    Title = "Welcome to Rolex hub x",
+    Text = "by rana_GZ77 • ZREfisch • Nebula\nUpdate Logs\n- KeySystem"
+})
+
+local destroyButton = creditsSection:CreateButton({
+    Name = "Destroy UI",
+    Callback = function()
+        Luna:Destroy()
+    end
+})
+
+-- Tab Script
+local ScriptTab = Window:CreateTab({
+    Name = "Script",
+    Icon = "laptop",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local scriptSection = ScriptTab:CreateSection("Script")
+
+local scripts = {
+    {name = "Speed Hub X", url = "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", status = "Key System"},
+    {name = "Chiyo Hub", url = "https://raw.githubusercontent.com/kaisenlmao/loader/refs/heads/main/chiyo.lua", status = "Key System"},
+    {name = "Lightningware v2", url = "https://api.luarmor.net/files/v3/loaders/f3ed0bc1276c97a6404b78a360196d2d.lua", status = "Keyless for Evade"},
+    {name = "Chloe x Hub", url = "https://raw.githubusercontent.com/MajestySkie/Chloe-X/main/Main/ChloeX", status = "Keyless for Fish It"},
+    {name = "Vinz Hub", url = "https://script.vinzhub.com/loader", status = "Keyless"},
+    {name = "Ronix Hub", url = "https://api.luarmor.net/files/v3/loaders/fda9babd071d6b536a745774b6bc681c.lua", status = "Key System"},
+    {name = "XVC Hub", url = "https://rayfield.xvchubontop.workers.dev/", status = "Keyless"},
+    {name = "Dragonic Hub X", url = "https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/files/Evade/Overhaul.lua", status = "Key System for Evade"},
+    {name = "Lunor", url = "https://lunor.dev/loader", status = "Key System"},
+    {name = "Lumin", url = "http://luminon.top/loader.lua", status = "Key System"},
+    {name = "Solara Hub", url = "https://raw.githubusercontent.com/samuraa1/Solara-Hub/refs/heads/main/SH.lua", status = "Key System"},
+    {name = "Ghost Hub", url = "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub", status = "Key System"},
+    {name = "Than Hub", url = "https://raw.githubusercontent.com/thantzy/thanhub/refs/heads/main/thanv1", status = "Key System"},
+    {name = "Solix Hub", url = "https://raw.githubusercontent.com/meobeo8/a/a/a", status = "Key System"}
+}
+
+for _, scriptData in ipairs(scripts) do
+    scriptSection:CreateButton({
+        Name = scriptData.name .. " (" .. scriptData.status .. ")",
+        Callback = function()
+            loadstring(game:HttpGet(scriptData.url, true))()
+        end,
+    })
+end
+
+-- Tab admin Script
+local adminTab = Window:CreateTab({
+    Name = "admin Script",
+    Icon = "laptop",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local adminSection = adminTab:CreateSection("Admin Scripts")
+
+adminSection:CreateButton({
+    Name = "Infinite Yield (Keyless)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end,
+})
+
+adminSection:CreateButton({
+    Name = "Nameless (Keyless)",
+    Callback = function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Nameless-admin-reworked-75477"))()
+    end,
+})
+
+adminSection:CreateButton({
+    Name = "AK Admin (Key System)",
+    Callback = function()
+        loadstring(game:HttpGet("https://absent.wtf/AKADMIN.lua"))()
+    end,
+})
+
+adminSection:CreateButton({
+    Name = "Cat Vape (Keyless)",
+    Callback = function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/new-qwertyui/CatV5/main/init.lua'))()
+    end,
+})
+
+-- Tab myScript
+local myScriptTab = Window:CreateTab({
+    Name = "myScript",
+    Icon = "code",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local myScriptSection = myScriptTab:CreateSection("My Scripts")
+
+myScriptSection:CreateButton({
+    Name = "Saturn's Ring (Keyless)",
+    Callback = function()
+        Luna:Destroy()
+        loadstring(game:HttpGet("https://pastebin.com/raw/a1Vvhd8Y"))()
+    end,
+})
+
+-- Tab Player
+local PlayerTab = Window:CreateTab({
+    Name = "Player",
+    Icon = "settings",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local defaultWalkSpeed = 16
+local defaultJumpPower = 50
+
+local speedMultiplier = 1
+local jumpMultiplier = 1
+local infiniteJumpEnabled = false
+
+local player = game.Players.LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+local function applyStats()
+    local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = defaultWalkSpeed * speedMultiplier
+            humanoid.JumpPower = defaultJumpPower * jumpMultiplier
+        end
+    end
+end
+
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    applyStats()
+end)
+
+PlayerTab:CreateToggle({
+    Name = "Infinite Jump",
+    CurrentState = false,
+    Callback = function(state)
+        infiniteJumpEnabled = state
+    end
+})
+
+UserInputService.JumpRequest:Connect(function()
+    if infiniteJumpEnabled then
+        local character = player.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
+        end
+    end
+end)
+
+local function setSpeed(multiplier)
+    speedMultiplier = multiplier
+    applyStats()
+end
+
+PlayerTab:CreateToggle({
+    Name = "Speed x2",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setSpeed(2)
+        else
+            setSpeed(1)
+        end
+    end
+})
+
+PlayerTab:CreateToggle({
+    Name = "Speed x4",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setSpeed(4)
+        else
+            setSpeed(1)
+        end
+    end
+})
+
+PlayerTab:CreateToggle({
+    Name = "Speed x8",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setSpeed(8)
+        else
+            setSpeed(1)
+        end
+    end
+})
+
+local function setJump(multiplier)
+    jumpMultiplier = multiplier
+    applyStats()
+end
+
+PlayerTab:CreateToggle({
+    Name = "Jump Power x2",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setJump(2)
+        else
+            setJump(1)
+        end
+    end
+})
+
+PlayerTab:CreateToggle({
+    Name = "Jump Power x4",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setJump(4)
+        else
+            setJump(1)
+        end
+    end
+})
+
+PlayerTab:CreateToggle({
+    Name = "Jump Power x8",
+    CurrentState = false,
+    Callback = function(state)
+        if state then
+            setJump(8)
+        else
+            setJump(1)
+        end
+    end
+})
+
+-- Rejoin Button
+PlayerTab:CreateButton({
+    Name = "Rejoin",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId)
+    end,
+})
+
+-- Server Hop Button
+PlayerTab:CreateButton({
+    Name = "Server Hop",
+    Callback = function()
+        local TeleportService = game:GetService("TeleportService")
+        local AllPlayers = game:GetService("Players"):GetPlayers()
+        local PlaceId = game.PlaceId
+        local RandomPlayer = nil
+
+        local Servers = {}
+        -- Ambil semua server
+        local success, response = pcall(function()
+            return game:GetService("HttpService"):GetAsync("https://games.roblox.com/v1/games/"..PlaceId.."/servers?sortOrder=Asc&limit=100")
+        end)
+        if success then
+            local decoded = game:GetService("HttpService"):JSONDecode(response)
+            for _, server in ipairs(decoded.data) do
+                if server.playing - server.maxPlayers < 1 then -- server penuh
+                    table.insert(Servers, server)
+                end
+            end
+        end
+
+        -- Jika ada server lain, teleport ke server acak
+        if #Servers > 0 then
+            local server = Servers[math.random(1, #Servers)]
+            TeleportService:TeleportToPlaceInstance(PlaceId, server.id)
+        else
+            -- Jika tidak ada server lain, rejoin otomatis
+            game:GetService("TeleportService"):Teleport(PlaceId)
+        end
+    end,
+})
