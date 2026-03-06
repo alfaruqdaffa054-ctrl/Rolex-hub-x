@@ -1,40 +1,211 @@
 -- LocalScript → StarterGui
 local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
 
--- ===== Save-status =====
-local saved = player:FindFirstChild("KeyValidated")
-if not saved then
-    saved = Instance.new("BoolValue")
-    saved.Name = "KeyValidated"
-    saved.Value = false
-    saved.Parent = player
+-- FILE DATA
+local KeyFile = "rolexhub_key.txt"
+
+-- KEY LIST
+local KEYS = {
+	"Rolexhub67",
+	"premium",
+	"dev"
+}
+
+local LINK = "https://rekonise.com/key-system-rolex-hub-x-o5y2g"
+
+-- cek key di file
+local function isValidKey(input)
+	for _,key in pairs(KEYS) do
+		if input == key then
+			return true
+		end
+	end
+	return false
 end
 
--- kalau sudah pernah valid → langsung jalankan script
-if saved.Value then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20x%20v1.1"))()
-    return
+if isfile and isfile(KeyFile) then
+	local savedKey = readfile(KeyFile)
+	if isValidKey(savedKey) then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20x%20v1.1"))()
+		return
+	end
 end
 
+-- GUI
 local gui = Instance.new("ScreenGui")
-gui.Name = "KeySystem"
+gui.Parent = player.PlayerGui
 gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
 
+-- FRAME
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 320, 0, 200)
-frame.Position = UDim2.new(0.5, -160, 0.5, -100)
-frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.Parent = gui
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0,10)
+frame.Size = UDim2.new(0,0,0,0)
+frame.Position = UDim2.new(0.5,-160,0.5,-100)
+frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Instance.new("UICorner",frame).CornerRadius = UDim.new(0,14)
 
--- CLOSE BUTTON
-local closeBtn = Instance.new("TextButton", frame)
-closeBtn.Text = "×"
-closeBtn.Size = UDim2.new(0,28,0,28)
-closeBtn.Position = UDim2.new(1,-34,0,6)
-closeBtn.BackgroundColor3 = Color3.fromRGB(200,40,40)
-closeBtn.TextColor3 = Color3.new(1,1,1)
+-- GRADIENT
+local gradient = Instance.new("UIGradient",frame)
+gradient.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0,Color3.fromRGB(40,40,40)),
+	ColorSequenceKeypoint.new(1,Color3.fromRGB(15,15,15))
+}
+
+-- STROKE
+local stroke = Instance.new("UIStroke",frame)
+stroke.Color = Color3.fromRGB(0,170,255)
+stroke.Transparency = 0.4
+stroke.Thickness = 1.5
+
+-- OPEN ANIMATION
+TweenService:Create(
+	frame,
+	TweenInfo.new(.35,Enum.EasingStyle.Back),
+	{Size = UDim2.new(0,320,0,200)}
+):Play()
+
+-- TITLE
+local title = Instance.new("TextLabel")
+title.Parent = frame
+title.Text = "ROLEX HUB X"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextColor3 = Color3.new(1,1,1)
+title.BackgroundTransparency = 1
+title.Size = UDim2.new(1,0,0,40)
+
+-- CLOSE
+local close = Instance.new("TextButton")
+close.Parent = frame
+close.Text = "×"
+close.Size = UDim2.new(0,28,0,28)
+close.Position = UDim2.new(1,-34,0,6)
+close.BackgroundColor3 = Color3.fromRGB(255,70,70)
+close.TextColor3 = Color3.new(1,1,1)
+close.Font = Enum.Font.GothamBold
+close.TextSize = 18
+Instance.new("UICorner",close).CornerRadius = UDim.new(1,0)
+
+close.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
+
+-- TEXTBOX
+local box = Instance.new("TextBox")
+box.Parent = frame
+box.PlaceholderText = "Enter Key..."
+box.Size = UDim2.new(.86,0,0,38)
+box.Position = UDim2.new(.07,0,.3,0)
+box.BackgroundColor3 = Color3.fromRGB(45,45,45)
+box.TextColor3 = Color3.new(1,1,1)
+box.Font = Enum.Font.Gotham
+box.TextSize = 14
+Instance.new("UICorner",box).CornerRadius = UDim.new(0,10)
+
+-- STATUS
+local status = Instance.new("TextLabel")
+status.Parent = frame
+status.BackgroundTransparency = 1
+status.Size = UDim2.new(1,0,0,20)
+status.Position = UDim2.new(0,0,.52,0)
+status.TextColor3 = Color3.fromRGB(200,200,200)
+status.Font = Enum.Font.Gotham
+status.TextSize = 14
+
+-- COPY BUTTON
+local copy = Instance.new("TextButton")
+copy.Parent = frame
+copy.Text = "Copy Link"
+copy.Size = UDim2.new(.4,0,0,38)
+copy.Position = UDim2.new(.08,0,.68,0)
+copy.BackgroundColor3 = Color3.fromRGB(0,120,255)
+copy.TextColor3 = Color3.new(1,1,1)
+copy.Font = Enum.Font.GothamBold
+Instance.new("UICorner",copy).CornerRadius = UDim.new(0,10)
+
+-- CHECK BUTTON
+local check = Instance.new("TextButton")
+check.Parent = frame
+check.Text = "Check Key"
+check.Size = UDim2.new(.4,0,0,38)
+check.Position = UDim2.new(.52,0,.68,0)
+check.BackgroundColor3 = Color3.fromRGB(0,200,120)
+check.TextColor3 = Color3.new(1,1,1)
+check.Font = Enum.Font.GothamBold
+Instance.new("UICorner",check).CornerRadius = UDim.new(0,10)
+
+-- DRAG SYSTEM
+local dragging, dragStart, startPos
+
+frame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = frame.Position
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		frame.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+-- LOGIC
+local cooldown = false
+
+copy.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard(LINK)
+		status.Text = "Link copied"
+	end
+end)
+
+check.MouseButton1Click:Connect(function()
+
+	if cooldown then return end
+	cooldown = true
+
+	status.Text = "Checking..."
+	task.wait(2)
+
+	if isValidKey(box.Text) then
+
+		if writefile then
+			writefile(KeyFile,box.Text)
+		end
+
+		status.Text = "Key Valid"
+
+		task.wait(.5)
+		gui:Destroy()
+
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20x%20v1.1"))()
+
+	else
+
+		status.Text = "Wrong Key"
+		box.Text = ""
+
+	end
+
+	cooldown = false
+
+end)closeBtn.TextColor3 = Color3.new(1,1,1)
 closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextSize = 18
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1,0)
