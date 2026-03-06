@@ -1,40 +1,334 @@
-local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/main/source.lua"))()
+-- LOAD RAYFIELD
+
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local TeleportService = game:GetService("TeleportService")
 local UIS = game:GetService("UserInputService")
+local TeleportService = game:GetService("TeleportService")
 
-local Player = Players.LocalPlayer
+local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
 
 
 -- WINDOW
 
-local Window = Luna:CreateWindow({
-    Name = "Rolex Hub X",
-    LoadingTitle = "Rolex Hub X",
-    LoadingSubtitle = "by Faruq",
+local Window = Rayfield:CreateWindow({
+   Name = "Rolex Hub X",
+   LoadingTitle = "Rolex Hub X",
+   LoadingSubtitle = "by Faruq",
+   ConfigurationSaving = {
+      Enabled = false
+   }
 })
 
 
 
 -- TABS
 
-local VisualTab = Window:CreateTab({
-    Name = "Visual",
-    Icon = "eye"
-})
+local VisualTab = Window:CreateTab("Visual", 4483362458)
 
-local PlayerTab = Window:CreateTab({
-    Name = "Player",
-    Icon = "user"
-})
+local PlayerTab = Window:CreateTab("Player", 4483362458)
 
 
 
 -- VARIABLES
+
+local espEnabled = false
+local aimbotEnabled = false
+local infiniteJump = false
+local noclip = false
+local invisible = false
+
+
+
+-- ESP FUNCTION
+
+local function CreateESP(player)
+
+    if player == LocalPlayer then return end
+
+    player.CharacterAdded:Connect(function(char)
+
+        if not espEnabled then return end
+
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(255,0,0)
+        highlight.OutlineColor = Color3.fromRGB(255,255,255)
+        highlight.Parent = char
+
+        local hrp = char:WaitForChild("HumanoidRootPart")
+
+        local bill = Instance.new("BillboardGui")
+        bill.Size = UDim2.new(0,120,0,40)
+        bill.StudsOffset = Vector3.new(0,3,0)
+        bill.AlwaysOnTop = true
+        bill.Parent = hrp
+
+        local text = Instance.new("TextLabel")
+        text.Size = UDim2.new(1,0,1,0)
+        text.BackgroundTransparency = 1
+        text.TextColor3 = Color3.new(1,1,1)
+        text.TextScaled = true
+        text.Font = Enum.Font.GothamBold
+        text.Parent = bill
+
+        RunService.RenderStepped:Connect(function()
+
+            if espEnabled and hrp then
+                text.Text = player.Name.." | Y:"..math.floor(hrp.Position.Y)
+            end
+
+        end)
+
+    end)
+
+end
+
+
+
+for _,p in pairs(Players:GetPlayers()) do
+    CreateESP(p)
+end
+
+Players.PlayerAdded:Connect(CreateESP)
+
+
+
+-- TRACERS
+
+local tracers = {}
+
+RunService.RenderStepped:Connect(function()
+
+    for _,player in pairs(Players:GetPlayers()) do
+
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+
+            if not tracers[player] then
+                local line = Drawing.new("Line")
+                line.Thickness = 2
+                line.Color = Color3.fromRGB(255,0,0)
+                tracers[player] = line
+            end
+
+            local hrp = player.Character.HumanoidRootPart
+            local pos, visible = Camera:WorldToViewportPoint(hrp.Position)
+
+            if espEnabled and visible then
+                tracers[player].Visible = true
+                tracers[player].From = Vector2.new(Camera.ViewportSize.X/2,Camera.ViewportSize.Y)
+                tracers[player].To = Vector2.new(pos.X,pos.Y)
+            else
+                tracers[player].Visible = false
+            end
+
+        end
+
+    end
+
+end)
+
+
+
+-- AIMBOT
+
+local function GetClosest()
+
+    local closest
+    local dist = 500
+
+    for _,player in pairs(Players:GetPlayers()) do
+
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+
+            local head = player.Character.Head
+            local pos,vis = Camera:WorldToViewportPoint(head.Position)
+
+            if vis then
+
+                local mag = (Vector2.new(pos.X,pos.Y) - UIS:GetMouseLocation()).Magnitude
+
+                if mag < dist then
+                    dist = mag
+                    closest = head
+                end
+
+            end
+
+        end
+
+    end
+
+    return closest
+
+end
+
+
+
+RunService.RenderStepped:Connect(function()
+
+    if aimbotEnabled then
+
+        local target = GetClosest()
+
+        if target then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position,target.Position)
+        end
+
+    end
+
+end)
+
+
+
+-- INFINITE JUMP
+
+UIS.JumpRequest:Connect(function()
+
+    if infiniteJump and LocalPlayer.Character then
+        LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+    end
+
+end)
+
+
+
+-- NOCLIP
+
+RunService.Stepped:Connect(function()
+
+    if noclip and LocalPlayer.Character then
+
+        for _,v in pairs(LocalPlayer.Character:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+
+    end
+
+end)
+
+
+
+-- INVISIBLE
+
+local function ToggleInvisible(state)
+
+    if not LocalPlayer.Character then return end
+
+    for _,v in pairs(LocalPlayer.Character:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Transparency = state and 1 or 0
+        end
+    end
+
+end
+
+
+
+-- VISUAL TOGGLES
+
+VisualTab:CreateToggle({
+
+   Name = "ESP + Tracers + Height",
+   CurrentValue = false,
+   Callback = function(Value)
+
+        espEnabled = Value
+
+   end
+
+})
+
+
+
+VisualTab:CreateToggle({
+
+   Name = "Aimbot Head (FOV 500)",
+   CurrentValue = false,
+   Callback = function(Value)
+
+        aimbotEnabled = Value
+
+   end
+
+})
+
+
+
+-- PLAYER TOGGLES
+
+PlayerTab:CreateToggle({
+
+   Name = "Infinite Jump",
+   CurrentValue = false,
+   Callback = function(Value)
+
+        infiniteJump = Value
+
+   end
+
+})
+
+
+
+PlayerTab:CreateToggle({
+
+   Name = "Noclip",
+   CurrentValue = false,
+   Callback = function(Value)
+
+        noclip = Value
+
+   end
+
+})
+
+
+
+PlayerTab:CreateToggle({
+
+   Name = "Invisible",
+   CurrentValue = false,
+   Callback = function(Value)
+
+        invisible = Value
+        ToggleInvisible(Value)
+
+   end
+
+})
+
+
+
+-- PLAYER BUTTONS
+
+PlayerTab:CreateButton({
+
+   Name = "Rejoin Server",
+   Callback = function()
+
+        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+
+   end
+
+})
+
+
+
+PlayerTab:CreateButton({
+
+   Name = "Server Hop",
+   Callback = function()
+
+        TeleportService:Teleport(game.PlaceId)
+
+   end
+
+})-- VARIABLES
 
 local espEnabled = false
 local aimbotEnabled = false
