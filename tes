@@ -1,0 +1,344 @@
+local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/main/source.lua"))()
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TeleportService = game:GetService("TeleportService")
+local UIS = game:GetService("UserInputService")
+
+local Player = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+
+
+-- WINDOW
+
+local Window = Luna:CreateWindow({
+    Name = "Rolex Hub X",
+    LoadingTitle = "Rolex Hub X",
+    LoadingSubtitle = "by Faruq",
+})
+
+
+
+-- TABS
+
+local VisualTab = Window:CreateTab({
+    Name = "Visual",
+    Icon = "eye"
+})
+
+local PlayerTab = Window:CreateTab({
+    Name = "Player",
+    Icon = "user"
+})
+
+
+
+-- VARIABLES
+
+local espEnabled = false
+local aimbotEnabled = false
+local infiniteJump = false
+local noclip = false
+local invisible = false
+
+
+
+-- ESP + TRACERS + HEIGHT
+
+local function createESP(plr)
+
+    if plr == Player then return end
+
+    local char = plr.Character
+    if not char then return end
+
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    if char:FindFirstChild("Highlight") then return end
+
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.fromRGB(255,0,0)
+    highlight.OutlineColor = Color3.fromRGB(255,255,255)
+    highlight.Parent = char
+
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Size = UDim2.new(0,100,0,40)
+    billboard.StudsOffset = Vector3.new(0,3,0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = hrp
+
+    local text = Instance.new("TextLabel")
+    text.Size = UDim2.new(1,0,1,0)
+    text.BackgroundTransparency = 1
+    text.TextColor3 = Color3.new(1,1,1)
+    text.TextScaled = true
+    text.Font = Enum.Font.GothamBold
+    text.Parent = billboard
+
+    RunService.RenderStepped:Connect(function()
+
+        if espEnabled and char and hrp then
+
+            local height = math.floor(hrp.Position.Y)
+            text.Text = plr.Name.." | Y:"..height
+
+        else
+
+            highlight:Destroy()
+            billboard:Destroy()
+
+        end
+
+    end)
+
+end
+
+
+
+RunService.RenderStepped:Connect(function()
+
+    if espEnabled then
+        for _,plr in pairs(Players:GetPlayers()) do
+            createESP(plr)
+        end
+    end
+
+end)
+
+
+
+-- TRACERS
+
+local function createTracer(plr)
+
+    if plr == Player then return end
+
+    local line = Drawing.new("Line")
+    line.Thickness = 2
+    line.Color = Color3.fromRGB(255,0,0)
+
+    RunService.RenderStepped:Connect(function()
+
+        if not espEnabled then
+            line.Visible = false
+            return
+        end
+
+        local char = plr.Character
+        if not char then return end
+
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+
+        local pos,vis = Camera:WorldToViewportPoint(hrp.Position)
+
+        if vis then
+            line.Visible = true
+            line.From = Vector2.new(Camera.ViewportSize.X/2,Camera.ViewportSize.Y)
+            line.To = Vector2.new(pos.X,pos.Y)
+        else
+            line.Visible = false
+        end
+
+    end)
+
+end
+
+
+for _,plr in pairs(Players:GetPlayers()) do
+    createTracer(plr)
+end
+
+
+
+-- AIMBOT
+
+local function getClosest()
+
+    local closest = nil
+    local dist = 500
+
+    for _,plr in pairs(Players:GetPlayers()) do
+
+        if plr ~= Player and plr.Character then
+
+            local head = plr.Character:FindFirstChild("Head")
+
+            if head then
+
+                local pos,vis = Camera:WorldToViewportPoint(head.Position)
+
+                if vis then
+
+                    local mag = (Vector2.new(pos.X,pos.Y) - UIS:GetMouseLocation()).Magnitude
+
+                    if mag < dist then
+                        dist = mag
+                        closest = head
+                    end
+
+                end
+
+            end
+
+        end
+
+    end
+
+    return closest
+
+end
+
+
+RunService.RenderStepped:Connect(function()
+
+    if aimbotEnabled then
+
+        local target = getClosest()
+
+        if target then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position,target.Position)
+        end
+
+    end
+
+end)
+
+
+
+-- INFINITE JUMP
+
+UIS.JumpRequest:Connect(function()
+
+    if infiniteJump then
+        Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+    end
+
+end)
+
+
+
+-- NOCLIP
+
+RunService.Stepped:Connect(function()
+
+    if noclip and Player.Character then
+
+        for _,v in pairs(Player.Character:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
+            end
+        end
+
+    end
+
+end)
+
+
+
+-- INVISIBLE
+
+local function toggleInvisible()
+
+    local char = Player.Character
+    if not char then return end
+
+    for _,v in pairs(char:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Transparency = invisible and 1 or 0
+        end
+    end
+
+end
+
+
+
+-- VISUAL TOGGLES
+
+VisualTab:CreateToggle({
+    Name = "ESP + Tracers + Height",
+    CurrentValue = false,
+    Callback = function(v)
+
+        espEnabled = v
+
+    end
+})
+
+
+
+VisualTab:CreateToggle({
+    Name = "Aimbot Head (FOV 500)",
+    CurrentValue = false,
+    Callback = function(v)
+
+        aimbotEnabled = v
+
+    end
+})
+
+
+
+-- PLAYER TOGGLES
+
+PlayerTab:CreateToggle({
+    Name = "Infinite Jump",
+    CurrentValue = false,
+    Callback = function(v)
+
+        infiniteJump = v
+
+    end
+})
+
+
+
+PlayerTab:CreateToggle({
+    Name = "Noclip",
+    CurrentValue = false,
+    Callback = function(v)
+
+        noclip = v
+
+    end
+})
+
+
+
+PlayerTab:CreateToggle({
+    Name = "Invisible",
+    CurrentValue = false,
+    Callback = function(v)
+
+        invisible = v
+        toggleInvisible()
+
+    end
+})
+
+
+
+-- PLAYER BUTTONS
+
+PlayerTab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+
+        TeleportService:Teleport(game.PlaceId,Player)
+
+    end
+})
+
+
+
+PlayerTab:CreateButton({
+    Name = "Server Hop",
+    Callback = function()
+
+        TeleportService:Teleport(game.PlaceId)
+
+    end
+})
