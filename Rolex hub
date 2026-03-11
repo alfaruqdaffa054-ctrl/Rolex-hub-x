@@ -7,8 +7,8 @@ local Window = Rayfield:CreateWindow({
    Icon = 0,
    LoadingTitle = "Rolex Hub v1.2",
    LoadingSubtitle = "wait for load",
-   ShowText = "Rayfield",
-   Theme = "Default",
+   ShowText = "RolexHub",
+   Theme = "AmberGlow",
 
    ToggleUIKeybind = "P",
 
@@ -127,3 +127,12 @@ for _,v in ipairs(myScripts) do
       end
    })
 end
+
+local settingsTab = Window:CreateTab("settings", 4483362458)
+
+local Button = settingsTab:CreateButton({
+   Name = "Destroy ui",
+   Callback = function()
+      Rayfield:Destroy()
+   end,
+})
