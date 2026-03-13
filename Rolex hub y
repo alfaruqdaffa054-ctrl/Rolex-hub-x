@@ -63,6 +63,108 @@ local scriptList = {
     {name="Solix Hub",url="https://raw.githubusercontent.com/meobeo8/a/a/a",status="Key System"},
     {name="Meng Hub",url="https://raw.githubusercontent.com/GrexXMeng/Mengs/refs/heads/main/library",status="Keyless"},
     {name="Catraz Hub",url="https://raw.githubusercontent.com/nurvian/Catraz-HUB/refs/heads/main/Catraz/main.lua",status="Key System"},
+    {name="Hoho Hub",url="https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI",status="Key System"},
+    {name="gravity",url="https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua",status="Keyless"}
+}
+
+for _,v in ipairs(scriptList) do
+    scriptTab:CreateButton({
+        Name = v.name.." ("..v.status..")",
+        Description = "Execute "..v.name,
+        Callback = function()
+            loadstring(game:HttpGet(v.url,true))()
+        end
+    })
+end
+
+-- ADMIN TAB
+local adminTab = Window:CreateTab({
+    Name = "Admin Script",
+    Icon = "laptop",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local adminList = {
+    {name="Infinite Yield",url="https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source",status="Keyless"},
+    {name="Nameless Admin",url="https://rawscripts.net/raw/Universal-Script-Nameless-admin-reworked-75477",status="Keyless"},
+    {name="AK Admin",url="https://absent.wtf/AKADMIN.lua",status="Key System"},
+    {name="Cat V5",url="https://raw.githubusercontent.com/new-qwertyui/CatV5/main/init.lua",status="Keyless"},
+    {name="Dex Explorer",url="https://rawscripts.net/raw/Universal-Script-Dex-Explorer-DPP-73687",status="Keyless"}
+}
+
+for _,v in ipairs(adminList) do
+   adminTab:CreateButton({
+      Name = v.name.." ("..v.status..")",
+      Callback = function()
+         loadstring(game:HttpGet(v.url,true))()
+      end
+   })
+end
+
+-- MY SCRIPT TAB
+local myTab = Window:CreateTab({
+    Name = "My Script",
+    Icon = "code",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local myScripts = {
+    {name="Saturn Ring",url="https://pastebin.com/raw/a1Vvhd8Y",status="Keyless"}
+}
+
+for _,v in ipairs(myScripts) do
+   myTab:CreateButton({
+      Name = v.name.." ("..v.status..")",
+      Callback = function()
+         Luna:Destroy()
+         loadstring(game:HttpGet(v.url,true))()
+      end
+   })
+end
+
+local settingsTab = Window:CreateTab({
+    Name = "Settings",
+    Icon = "settings",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+settingsTab:CreateButton({
+    Name = "Destroy UI",
+    Callback = function()
+        Luna:Destroy()
+    end
+})})
+
+-- SCRIPT HUB
+local scriptTab = Window:CreateTab({
+    Name = "Script Hub",
+    Icon = "laptop",
+    ImageSource = "Material",
+    ShowTitle = true
+})
+
+local scriptSection = scriptTab:CreateSection("Script List")
+
+local scriptList = {
+    {name="Speed Hub X",url="https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua",status="Key System"},
+    {name="Chiyo Hub",url="https://raw.githubusercontent.com/kaisenlmao/loader/refs/heads/main/chiyo.lua",status="Key System"},
+    {name="Lightningware v2",url="https://api.luarmor.net/files/v3/loaders/f3ed0bc1276c97a6404b78a360196d2d.lua",status="Keyless for Evade"},
+    {name="Chloe x Hub",url="https://raw.githubusercontent.com/MajestySkie/Chloe-X/main/Main/ChloeX",status="Keyless for Fish It"},
+    {name="Vinz Hub",url="https://script.vinzhub.com/loader",status="Keyless"},
+    {name="Ronix Hub",url="https://api.luarmor.net/files/v3/loaders/fda9babd071d6b536a745774b6bc681c.lua",status="Key System"},
+    {name="XVC Hub",url="https://rayfield.xvchubontop.workers.dev/",status="Keyless"},
+    {name="Dragonic Hub X",url="https://raw.githubusercontent.com/Unknownproooolucky/Draconic-Hub-X/refs/heads/main/files/Evade/Overhaul.lua",status="Key System for Evade"},
+    {name="Lunor",url="https://lunor.dev/loader",status="Key System"},
+    {name="Lumin",url="http://luminon.top/loader.lua",status="Key System"},
+    {name="Solara Hub",url="https://raw.githubusercontent.com/samuraa1/Solara-Hub/refs/heads/main/SH.lua",status="Key System"},
+    {name="Ghost Hub",url="https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub",status="Key System"},
+    {name="Than Hub",url="https://raw.githubusercontent.com/thantzy/thanhub/refs/heads/main/thanv1",status="Key System"},
+    {name="Solix Hub",url="https://raw.githubusercontent.com/meobeo8/a/a/a",status="Key System"},
+    {name="Meng Hub",url="https://raw.githubusercontent.com/GrexXMeng/Mengs/refs/heads/main/library",status="Keyless"},
+    {name="Catraz Hub",url="https://raw.githubusercontent.com/nurvian/Catraz-HUB/refs/heads/main/Catraz/main.lua",status="Key System"},
     {name="Hoho Hub",url="https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI",status="Key System"}
 }
 
