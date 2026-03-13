@@ -93,7 +93,7 @@ ChooseUITab:CreateButton({
         })
         task.wait(0.8)
         Rayfield:Destroy()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub%20y", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex/refs/heads/main/luna", true))()
     end
 })
 
