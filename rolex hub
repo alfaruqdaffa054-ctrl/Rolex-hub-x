@@ -1,40 +1,132 @@
---// MODERN GUI WITH 2 BUTTON + DESTROY CORNER
-local UIS = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
+-- =============================================
+-- Rolex Hub - Gabungan Clean Version
+-- by rana_GZ77 & ZREfisch
+-- No UI selector, langsung full Rayfield UI
+-- =============================================
 
--- GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ModernGui"
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ResetOnSpawn = false
+print("[Rolex Hub] Loading Gabungan Clean UI...")
 
--- MAIN FRAME
-local Main = Instance.new("Frame")
-Main.Parent = ScreenGui
-Main.Size = UDim2.new(0,300,0,200)
-Main.Position = UDim2.new(0.5,-150,0.5,-100)
-Main.BackgroundColor3 = Color3.fromRGB(25,25,25)
-Main.BorderSizePixel = 0
-Main.Active = true
-Main.Draggable = true
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield', true))()
 
-local Corner = Instance.new("UICorner",Main)
-Corner.CornerRadius = UDim.new(0,12)
+local Window = Rayfield:CreateWindow({
+    Name = "Rolex Hub",
+    LoadingTitle = "Rolex Hub",
+    LoadingSubtitle = "Gabungan Edition",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "RolexHub",
+        FileName = "Config"
+    },
+    KeySystem = false,
+    Theme = "AmberGlow"  -- ganti kalau mau: Default, Ocean, Midnight, dll
+})
 
-local Gradient = Instance.new("UIGradient",Main)
-Gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0,Color3.fromRGB(30,30,30)),
-    ColorSequenceKeypoint.new(1,Color3.fromRGB(60,60,60))
-}
+-- =============================================
+-- Tab: Home (Utama)
+-- =============================================
+local HomeTab = Window:CreateTab("Home", "home")
 
--- TITLE
-local Title = Instance.new("TextLabel")
-Title.Parent = Main
-Title.Size = UDim2.new(1,0,0,40)
-Title.BackgroundTransparency = 1
-Title.Text = "🌟 Rolex hub ui search 🌟"
-Title.TextColor3 = Color3.fromRGB(255,255,255)
-Title.TextSize = 20
+HomeTab:CreateParagraph({
+    Title = "Credits",
+    Content = "• rana_GZ77\n• ZREfisch\n• Rayfield Interface Suite\n• Thanks for using Rolex Hub"
+})
+
+HomeTab:CreateParagraph({
+    Title = "Update Logs",
+    Content = "• new selector ui\n• Update fitur ui"
+})
+
+HomeTab:CreateSection("Quick Actions")
+
+HomeTab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Rejoining...",
+            Content = "Sedang teleport ke server yang sama...",
+            Duration = 4
+        })
+        task.wait(1)
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "Close UI (Destroy Rayfield)",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Goodbye",
+            Content = "UI ditutup...",
+            Duration = 3
+        })
+        task.wait(0.5)
+        Rayfield:Destroy()
+    end
+})
+
+-- =============================================
+-- Tab: Choose UI
+-- =============================================
+local ChooseUITab = Window:CreateTab("Choose UI", "laptop")
+
+ChooseUITab:CreateButton({
+    Name = "Rayfield",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Reloading...",
+            Content = "Memuat ulang Rolex Hub (Rayfield)",
+            Duration = 3
+        })
+        task.wait(0.8)
+        Rayfield:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/alfaruqdaffa054-ctrl/Rolex-hub-x/refs/heads/main/Rolex%20hub", true))()
+    end
+})
+
+ChooseUITab:CreateButton({
+    Name = "Luna",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Switching...",
+            Content = "Memuat Luna UI...",
+            Duration = 3
+        })
+        task.wait(0.8)
+        Rayfield:Destroy()
+        loadstring(game:HttpGet("https://pastebin.com/raw/zytki4L2", true))()
+    end
+})
+
+-- =============================================
+-- Tab: Support
+-- =============================================
+local SupportTab = Window:CreateTab("Support", "info")
+
+SupportTab:CreateButton({
+    Name = "Copy Discord Invite",
+    Callback = function()
+        setclipboard("https://discord.gg/FN5Whm3mQ")
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "Discord link telah disalin ke clipboard",
+            Duration = 4
+        })
+    end
+})
+
+SupportTab:CreateButton({
+    Name = "Copy WhatsApp Channel",
+    Callback = function()
+        setclipboard("https://whatsapp.com/channel/0029VbCOJs023n3cFALVxb10")
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "WhatsApp channel link telah disalin",
+            Duration = 4
+        })
+    end
+})
+
+print("[Rolex Hub] Gabungan Clean UI loaded successfully!")Title.TextSize = 20
 Title.Font = Enum.Font.GothamBold
 
 -- DESTROY BUTTON
