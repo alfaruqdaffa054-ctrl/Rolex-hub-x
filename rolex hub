@@ -11,7 +11,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield', true))(
 local Window = Rayfield:CreateWindow({
     Name = "Rolex Hub",
     LoadingTitle = "Rolex Hub",
-    LoadingSubtitle = "Gabungan Edition",
+    LoadingSubtitle = "Loading",
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "RolexHub",
@@ -32,9 +32,106 @@ HomeTab:CreateParagraph({
 })
 
 HomeTab:CreateParagraph({
-    Title = "Update Logs",
-    Content = "• new selector ui\n• Update fitur ui"
+    Title = "Update Logs Rayfield",
+    Content = "• new 2 script\n• new executor"
 })
+
+HomeTab:CreateParagraph({
+    Title = "Update Logs luna",
+    Content = "• new 2 script\n• new executor"
+})
+
+HomeTab:CreateSection("Quick Actions")
+
+HomeTab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Rejoining...",
+            Content = "Sedang teleport ke server yang sama...",
+            Duration = 4
+        })
+        task.wait(1)
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+    end
+})
+
+HomeTab:CreateButton({
+    Name = "Close UI (Destroy Rayfield)",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Goodbye",
+            Content = "UI ditutup...",
+            Duration = 3
+        })
+        task.wait(0.5)
+        Rayfield:Destroy()
+    end
+})
+
+-- =============================================
+-- Tab: Choose UI
+-- =============================================
+local ChooseUITab = Window:CreateTab("Choose UI", "laptop")
+
+ChooseUITab:CreateButton({
+    Name = "Rayfield",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Reloading...",
+            Content = "Memuat ulang Rolex Hub (Rayfield)",
+            Duration = 3
+        })
+        task.wait(0.8)
+        Rayfield:Destroy()
+        loadstring(game:HttpGet("https://pastebin.com/raw/JsGfEhDB", true))()
+    end
+})
+
+ChooseUITab:CreateButton({
+    Name = "Luna",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "Switching...",
+            Content = "Memuat Luna UI...",
+            Duration = 3
+        })
+        task.wait(0.8)
+        Rayfield:Destroy()
+        loadstring(game:HttpGet("https://pastebin.com/raw/zytki4L2", true))()
+    end
+})
+
+-- =============================================
+-- Tab: Support
+-- =============================================
+local SupportTab = Window:CreateTab("Support", "info")
+
+SupportTab:CreateButton({
+    Name = "Copy Discord Invite",
+    Callback = function()
+        setclipboard("https://discord.gg/FN5Whm3mQ")
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "Discord link telah disalin ke clipboard",
+            Duration = 4
+        })
+    end
+})
+
+SupportTab:CreateButton({
+    Name = "Copy WhatsApp Channel",
+    Callback = function()
+        setclipboard("https://whatsapp.com/channel/0029VbCOJs023n3cFALVxb10")
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "WhatsApp channel link telah disalin",
+            Duration = 4
+        })
+    end
+})
+
+print("[Rolex Hub] Gabungan Clean UI loaded successfully!")})
 
 HomeTab:CreateSection("Quick Actions")
 
