@@ -1,30 +1,37 @@
 -- =============================================
 -- Rolex Hub - Gabungan Clean Version
 -- by rana_GZ77 & ZREfisch
--- No UI selector, langsung full Rayfield UI
+-- Clean + Optimized Version
 -- =============================================
 
 print("[Rolex Hub] Loading Gabungan Clean UI...")
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield', true))()
+-- Load Rayfield
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local LocalPlayer = Players.LocalPlayer
+
+-- Window
 local Window = Rayfield:CreateWindow({
     Name = "Rolex Hub",
     LoadingTitle = "Rolex Hub",
-    LoadingSubtitle = "Loading",
+    LoadingSubtitle = "Loading Script...",
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "RolexHub",
         FileName = "Config"
     },
     KeySystem = false,
-    Theme = "AmberGlow"  -- ganti kalau mau: Default, Ocean, Midnight, dll
+    Theme = "AmberGlow"
 })
 
 -- =============================================
--- Tab: Home (Utama)
+-- Home Tab
 -- =============================================
-local HomeTab = Window:CreateTab("Home", "home")
+
+local HomeTab = Window:CreateTab("Home","home")
 
 HomeTab:CreateParagraph({
     Title = "Credits",
@@ -33,8 +40,137 @@ HomeTab:CreateParagraph({
 
 HomeTab:CreateParagraph({
     Title = "Update Logs Rayfield",
-    Content = "• new 2 script\n• new executor"
+    Content = "• Added 2 new scripts\n• Added new executor"
 })
+
+HomeTab:CreateParagraph({
+    Title = "Update Logs Luna",
+    Content = "• Added 2 new scripts\n• Added new executor"
+})
+
+HomeTab:CreateSection("Quick Actions")
+
+-- Rejoin Button
+HomeTab:CreateButton({
+    Name = "Rejoin Server",
+    Callback = function()
+
+        Rayfield:Notify({
+            Title = "Rejoining...",
+            Content = "Teleporting to same server",
+            Duration = 4
+        })
+
+        task.wait(1)
+
+        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+
+    end
+})
+
+-- Destroy UI
+HomeTab:CreateButton({
+    Name = "Close UI",
+    Callback = function()
+
+        Rayfield:Notify({
+            Title = "Goodbye",
+            Content = "Closing UI...",
+            Duration = 3
+        })
+
+        task.wait(1)
+
+        Rayfield:Destroy()
+
+    end
+})
+
+-- =============================================
+-- Choose UI Tab
+-- =============================================
+
+local ChooseUITab = Window:CreateTab("Choose UI","monitor")
+
+ChooseUITab:CreateButton({
+    Name = "Rayfield UI",
+    Callback = function()
+
+        Rayfield:Notify({
+            Title = "Reloading...",
+            Content = "Loading Rayfield version...",
+            Duration = 3
+        })
+
+        task.wait(1)
+
+        Rayfield:Destroy()
+
+        loadstring(game:HttpGet("https://pastebin.com/raw/JsGfEhDB"))()
+
+    end
+})
+
+ChooseUITab:CreateButton({
+    Name = "Luna UI",
+    Callback = function()
+
+        Rayfield:Notify({
+            Title = "Switching UI...",
+            Content = "Loading Luna Interface...",
+            Duration = 3
+        })
+
+        task.wait(1)
+
+        Rayfield:Destroy()
+
+        loadstring(game:HttpGet("https://pastebin.com/raw/zytki4L2"))()
+
+    end
+})
+
+-- =============================================
+-- Support Tab
+-- =============================================
+
+local SupportTab = Window:CreateTab("Support","info")
+
+SupportTab:CreateButton({
+    Name = "Copy Discord Invite",
+    Callback = function()
+
+        if setclipboard then
+            setclipboard("https://discord.gg/FN5Whm3mQ")
+        end
+
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "Discord link copied to clipboard",
+            Duration = 4
+        })
+
+    end
+})
+
+SupportTab:CreateButton({
+    Name = "Copy WhatsApp Channel",
+    Callback = function()
+
+        if setclipboard then
+            setclipboard("https://whatsapp.com/channel/0029VbCOJs023n3cFALVxb10")
+        end
+
+        Rayfield:Notify({
+            Title = "Copied!",
+            Content = "WhatsApp channel link copied",
+            Duration = 4
+        })
+
+    end
+})
+
+print("[Rolex Hub] Gabungan Clean UI loaded successfully!")})
 
 HomeTab:CreateParagraph({
     Title = "Update Logs luna",
